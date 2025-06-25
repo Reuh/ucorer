@@ -21,10 +21,4 @@ dnf5 install -y borgbackup borgmatic btrfsmaintenance fish glances micro plocate
 
 #### Example for enabling a System Unit File
 
-systemctl enable podman.socket
-systemctl enable podman-restart.service
-systemctl enable podman-auto-update.timer
-systemctl enable btrfsmaintenance-refresh.path
-systemctl enable plocate-updatedb.timer
-systemctl enable snapper-timeline.timer
-systemctl enable snapper-cleanup.timer
+# systemctl enable podman.socket
