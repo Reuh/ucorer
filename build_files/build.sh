@@ -4,21 +4,46 @@ set -ouex pipefail
 
 ### Install packages
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
-
-# this installs a package from fedora repos
+# Install from Fedora repos
 dnf5 install -y borgbackup borgmatic btrfsmaintenance fish glances micro plocate screen smartmontools snapper nut-client sshguard ncdu
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+# Build & install bees
+dnf -y install make gcc gcc-c++ btrfs-progs markdown
+git clone https://github.com/Zygo/bees.git
+cd bees
+git checkout v0.11
+make install
+cd ..
+rm -rf bees
 
-#### Example for enabling a System Unit File
+#### Systemd & configuration
 
-# systemctl enable podman.socket
+# system watchdog
+install -Dm 644 /ctx/system_files/etc/systemd/system.conf.d/watchdog.conf /etc/systemd/system.conf.d/watchdog.conf
+
+# plocate
+install -Dm 644 /ctx/system_files/etc/updatedb.conf /etc/updatedb.conf
+systemctl enable plocate-updatedb.timer
+
+# snapper
+systemctl enable snapper-cleanup.timer
+systemctl enable snapper-timeline.timer
+
+# btrfsmaintenance
+systemctl enable btrfsmaintenance-refresh.path
+systemctl enable btrfs-scrub.timer
+systemctl enable btrfs-balance.timer
+
+# tailscale
+systemctl enable tailscaled.service
+
+# cockpit
+systemctl enable cockpit.service
+
+# sshguard
+systemctl enable sshguard.service
+install -Dm 644 /ctx/system_files/etc/sshguard.conf /etc/sshguard.conf
+install -Dm 644 /ctx/system_files/etc/sshguard.whitelist /etc/sshguard.whitelist
+
+# borgmatic
+systemctl enable borgmatic.timer
