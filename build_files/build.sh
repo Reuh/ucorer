@@ -30,6 +30,7 @@ systemctl enable snapper-cleanup.timer
 systemctl enable snapper-timeline.timer
 
 # btrfsmaintenance
+install -Dm 644 /ctx/system_files/etc/sysconfig/btrfsmaintenance /etc/sysconfig/btrfsmaintenance
 systemctl enable btrfsmaintenance-refresh.path
 systemctl enable btrfs-scrub.timer
 systemctl enable btrfs-balance.timer
