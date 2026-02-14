@@ -5,7 +5,7 @@ set -ouex pipefail
 ### Install packages
 
 # Install from Fedora repos
-dnf5 install -y borgbackup borgmatic btrfsmaintenance fish glances micro plocate screen smartmontools snapper nut-client sshguard ncdu
+dnf5 install -y borgbackup borgmatic btrfsmaintenance fish glances micro plocate screen smartmontools snapper nut-client sshguard ncdu prometheus-podman-exporter
 
 # Build & install bees
 dnf -y install make gcc gcc-c++ btrfs-progs markdown
