@@ -11,7 +11,7 @@ dnf5 install -y borgbackup borgmatic btrfsmaintenance fish glances micro plocate
 dnf -y install make gcc gcc-c++ btrfs-progs markdown
 git clone https://github.com/Zygo/bees.git
 cd bees
-git checkout v0.11
+git checkout 2d53565
 make install
 cd ..
 rm -rf bees
